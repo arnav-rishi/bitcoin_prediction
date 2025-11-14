@@ -1,0 +1,12 @@
+# Data handling and numerical operations
+pandas==2.2.2
+# Pinned to a version before 2.0 to maintain compatibility
+numpy>=1.26.0,<2.0
+
+# Plotting and visualization
+matplotlib==3.8.4
+plotly==5.22.0
+
+# Machine Learning
+scikit-learn==1.5.0
+tensorflow==2.16.1
