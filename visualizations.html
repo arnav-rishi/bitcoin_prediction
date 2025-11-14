@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Prediction Model - Results Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .chart-container {
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .metric-box {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            min-width: 200px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bitcoin Price Prediction Using LSTM with Technical Indicators</h1>
+        <p style="text-align: center; color: #7f8c8d;">Experimental Results and Model Comparison</p>
+
+        <h2>Bitcoin Price History</h2>
+        <div class="chart-container">
+            <img src="bitcoin_price_history.png" alt="Bitcoin Price History" style="width: 100%; height: auto; border-radius: 8px;">
+            <p style="text-align: center; margin-top: 10px; color: #7f8c8d;">
+                <em>Figure: Time Series Plot of Bitcoin Prices (2014-2025)</em>
+            </p>
+        </div>
+
+        <h2>Model Performance Metrics</h2>
+        <div style="text-align: center;">
+            <div class="metric-box">
+                <div class="metric-value">0.016</div>
+                <div class="metric-label">R-Squared (R²)</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">0.0281</div>
+                <div class="metric-label">MAE (% change)</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">0.0385</div>
+                <div class="metric-label">RMSE (% change)</div>
+            </div>
+        </div>
+
+        <h2>Model Comparison - R-Squared Score</h2>
+        <div class="chart-container">
+            <div id="r2-chart"></div>
+        </div>
+
+        <h2>Model Comparison - MAE (Mean Absolute Error)</h2>
+        <div class="chart-container">
+            <div id="mae-chart"></div>
+        </div>
+
+        <h2>Model Comparison - RMSE (Root Mean Squared Error)</h2>
+        <div class="chart-container">
+            <div id="rmse-chart"></div>
+        </div>
+
+        <h2>Complete Performance Comparison Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>R-Squared (R²)</th>
+                    <th>MAE (% change)</th>
+                    <th>RMSE (% change)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color: #d4edda;">
+                    <td><strong>LSTM (Our Model)</strong></td>
+                    <td><strong>0.016</strong></td>
+                    <td><strong>0.028074</strong></td>
+                    <td><strong>0.038500</strong></td>
+                </tr>
+                <tr>
+                    <td>ARIMA(1,0,1)</td>
+                    <td>-0.001</td>
+                    <td>0.028032</td>
+                    <td>0.038841</td>
+                </tr>
+                <tr>
+                    <td>Random Forest</td>
+                    <td>-0.936</td>
+                    <td>0.043203</td>
+                    <td>0.054007</td>
+                </tr>
+                <tr>
+                    <td>XGBoost</td>
+                    <td>-1.422</td>
+                    <td>0.046575</td>
+                    <td>0.060401</td>
+                </tr>
+                <tr>
+                    <td>Linear Regression</td>
+                    <td>-3.781</td>
+                    <td>0.063332</td>
+                    <td>0.084867</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Model Architecture Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Specification</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Model Type</strong></td>
+                    <td>Long Short-Term Memory (LSTM) Neural Network</td>
+                </tr>
+                <tr>
+                    <td><strong>Input Features</strong></td>
+                    <td>Close Price, Volume % Change, SMA Difference, RSI</td>
+                </tr>
+                <tr>
+                    <td><strong>Sequence Length</strong></td>
+                    <td>60 days</td>
+                </tr>
+                <tr>
+                    <td><strong>LSTM Layer 1</strong></td>
+                    <td>100 units, return_sequences=True</td>
+                </tr>
+                <tr>
+                    <td><strong>Dropout Layer 1</strong></td>
+                    <td>Rate = 0.2</td>
+                </tr>
+                <tr>
+                    <td><strong>LSTM Layer 2</strong></td>
+                    <td>100 units, return_sequences=False</td>
+                </tr>
+                <tr>
+                    <td><strong>Dropout Layer 2</strong></td>
+                    <td>Rate = 0.2</td>
+                </tr>
+                <tr>
+                    <td><strong>Output Layer</strong></td>
+                    <td>Dense(1) - Linear activation</td>
+                </tr>
+                <tr>
+                    <td><strong>Optimizer</strong></td>
+                    <td>Adam (learning_rate = 0.001)</td>
+                </tr>
+                <tr>
+                    <td><strong>Loss Function</strong></td>
+                    <td>Mean Squared Error (MSE)</td>
+                </tr>
+                <tr>
+                    <td><strong>Batch Size</strong></td>
+                    <td>64</td>
+                </tr>
+                <tr>
+                    <td><strong>Early Stopping</strong></td>
+                    <td>Patience = 10 epochs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Technical Indicators Used</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Indicator</th>
+                    <th>Description</th>
+                    <th>Window Period</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>SMA (Simple Moving Average)</strong></td>
+                    <td>Average closing price over a period</td>
+                    <td>15 days</td>
+                </tr>
+                <tr>
+                    <td><strong>SMA_diff</strong></td>
+                    <td>Normalized difference between current price and SMA</td>
+                    <td>15 days</td>
+                </tr>
+                <tr>
+                    <td><strong>RSI (Relative Strength Index)</strong></td>
+                    <td>Momentum oscillator measuring speed and change of price</td>
+                    <td>14 days</td>
+                </tr>
+                <tr>
+                    <td><strong>Volume % Change</strong></td>
+                    <td>Percentage change in trading volume</td>
+                    <td>Daily</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Cross-Validation Results</h2>
+        <div class="chart-container">
+            <div id="cv-chart"></div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Average Value</th>
+                    <th>Standard Deviation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>R-Squared (R²)</td>
+                    <td>-1.1372</td>
+                    <td>0.6568</td>
+                </tr>
+                <tr>
+                    <td>MAE (% change)</td>
+                    <td>0.043489</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>RMSE (% change)</td>
+                    <td>0.057073</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // R-Squared Comparison Chart
+        var r2Data = [{
+            x: ['LSTM', 'ARIMA', 'Random Forest', 'XGBoost', 'Linear Regression'],
+            y: [0.016, -0.001, -0.936, -1.422, -3.781],
+            type: 'bar',
+            marker: {
+                color: ['#2ecc71', '#3498db', '#e74c3c', '#e74c3c', '#e74c3c']
+            }
+        }];
+        var r2Layout = {
+            title: 'R-Squared (R²) Comparison Across Models',
+            xaxis: { title: 'Model' },
+            yaxis: { title: 'R-Squared Score' },
+            height: 500
+        };
+        Plotly.newPlot('r2-chart', r2Data, r2Layout, {responsive: true});
+
+        // MAE Comparison Chart
+        var maeData = [{
+            x: ['LSTM', 'ARIMA', 'Random Forest', 'XGBoost', 'Linear Regression'],
+            y: [0.028074, 0.028032, 0.043203, 0.046575, 0.063332],
+            type: 'bar',
+            marker: {
+                color: ['#2ecc71', '#3498db', '#f39c12', '#f39c12', '#e74c3c']
+            }
+        }];
+        var maeLayout = {
+            title: 'Mean Absolute Error (MAE) Comparison',
+            xaxis: { title: 'Model' },
+            yaxis: { title: 'MAE (% change)' },
+            height: 500
+        };
+        Plotly.newPlot('mae-chart', maeData, maeLayout, {responsive: true});
+
+        // RMSE Comparison Chart
+        var rmseData = [{
+            x: ['LSTM', 'ARIMA', 'Random Forest', 'XGBoost', 'Linear Regression'],
+            y: [0.038500, 0.038841, 0.054007, 0.060401, 0.084867],
+            type: 'bar',
+            marker: {
+                color: ['#2ecc71', '#3498db', '#f39c12', '#f39c12', '#e74c3c']
+            }
+        }];
+        var rmseLayout = {
+            title: 'Root Mean Squared Error (RMSE) Comparison',
+            xaxis: { title: 'Model' },
+            yaxis: { title: 'RMSE (% change)' },
+            height: 500
+        };
+        Plotly.newPlot('rmse-chart', rmseData, rmseLayout, {responsive: true});
+
+        // Cross-Validation Results
+        var cvData = [{
+            x: ['Fold 1', 'Fold 2', 'Fold 3', 'Fold 4', 'Fold 5'],
+            y: [-0.1102, -1.7889, -1.7266, -1.4219, -0.6381],
+            type: 'bar',
+            marker: {
+                color: '#9b59b6'
+            }
+        }];
+        var cvLayout = {
+            title: 'Cross-Validation R² Scores Across 5 Folds',
+            xaxis: { title: 'Fold Number' },
+            yaxis: { title: 'R-Squared Score' },
+            height: 500
+        };
+        Plotly.newPlot('cv-chart', cvData, cvLayout, {responsive: true});
+    </script>
+</body>
+</html>
+
